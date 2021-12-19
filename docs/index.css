@@ -94,6 +94,7 @@ td {
     position: relative;
     border-radius: 10px;
     background-color: #d0c1b4;
+    padding: 0;
 }
 .basicElement {
     position: absolute;
