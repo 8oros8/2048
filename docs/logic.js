@@ -1,43 +1,21 @@
 'use strict'
 
-let bodyContainer = document.getElementById('bodyContainer')
+import {utilityFunctions} from "./utilityFunctions.js";
+const utility = new utilityFunctions()
+let defineColor = utility.getDefineColor()
+let getRandomInt = utility.getRandomInt()
+
+const bodyContainer = document.getElementById('bodyContainer')
 let mainTable = document.getElementById('mainTable')
 let tBody
 let currentScore = 0
-let scoreCounter = document.getElementById('score')
-let scoreWrapper = document.getElementById('scoreWrapper')
+const scoreCounter = document.getElementById('score')
+const scoreWrapper = document.getElementById('scoreWrapper')
 let animationDone = true // счетчик анимаций, по умолчанию true
 
 let grid = []
 let rowsNumber = 0
 let columnsNumber = 0
-
-function defineColor(element) {
-    let colorDefiner = parseInt(element.innerText)
-    if (colorDefiner <= 2048) {
-        element.style.backgroundColor = colors[`${colorDefiner}`]
-        if (colorDefiner > 4) {
-            element.style.color = '#faf6f2'
-        }
-    }
-    else {
-        element.style.backgroundColor = 'black'
-    }
-}
-
-let colors = { // После 2048 все элементы черные
-    2: '#f0e5da',
-    4: '#efe2c6',
-    8: '#fbb26c',
-    16: '#ff9251',
-    32: '#ff744e',
-    64: '#ff4d08',
-    128: '#f0d360',
-    256: '#f1d146',
-    512: '#f1cd26',
-    1024: '#f2ca00',
-    2048: '#f2c700'
-}
 
 function createGrid(height, width) {
     for (let i = 1; i <= height; i++) {
@@ -114,12 +92,6 @@ function drawElements(target) {
     }
 }
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
-}
-
 function elementCreate(targetGrid) { // Создаем два новых элемента; "2" с шансом 90%, "4" с шансом 10%
     let newElementValue
     if (getRandomInt(0,10) === 9) {
@@ -138,7 +110,7 @@ function elementCreate(targetGrid) { // Создаем два новых эле�
 }
 
 function move(direction) {
-    let horizontalRows = grid // массив горизонтальных рядов таблицы
+    const horizontalRows = grid // массив горизонтальных рядов таблицы
     let animationData = []
     let verticalColumns = []
     for (let i = 0; i < columnsNumber; i++) {
@@ -580,27 +552,19 @@ window.addEventListener('keydown', function(event) {
     if (animationDone) { // проверяем завершилась ли предыдущая анимация
         if (event.code === 'ArrowLeft') {
             let animationArray = move('left')
-            queueMicrotask(function () {
-                animate(animationArray)
-            })
+            animate(animationArray)
         }
         if (event.code === 'ArrowDown') {
             let animationArray = move('bottom')
-            queueMicrotask(function () {
-                animate(animationArray)
-            })
+            animate(animationArray)
         }
         if (event.code === 'ArrowUp') {
             let animationArray = move('top')
-            queueMicrotask(function () {
-                animate(animationArray)
-            })
+            animate(animationArray)
         }
         if (event.code === 'ArrowRight') {
             let animationArray = move('right')
-            queueMicrotask(function () {
-                animate(animationArray)
-            })
+            animate(animationArray)
         }
     }
 })
@@ -625,21 +589,16 @@ newGameButton.onclick = function () {
 
 createGrid(5, 5)
 
-grid[0][1].value = 2
-
-grid[0][4].value = 2
-
-
 drawGrid(grid)
 drawElements(grid)
 
 
-let generalObserver = new MutationObserver(function ()  { // обновление счета при любых изменениях
+const generalObserver = new MutationObserver(function ()  { // обновление счета при любых изменениях
     if (currentScore !== parseInt(scoreCounter.innerText)) {
         scoreCounter.innerText = currentScore
     }
 })
-let flickerObserver = new MutationObserver( function () {
+const flickerObserver = new MutationObserver( function () {
     scoreWrapper.animate( [
         { // from
             backgroundColor: '#2EE59D'
