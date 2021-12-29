@@ -78,14 +78,7 @@ class mainGame {
                             if (row[n].value === false) { // если находим пустой элемент
                                 row[n].value = row[i].value // перезаписываем в него значение перемещаемого элемента
                                 row[i].value = false // значение в старом элементе обнуляем
-                                let animationTarget = {
-                                    animationType: 'move',
-                                    animationTargetRow: row[i].row,
-                                    animationTargetColumn: row[i].column,
-                                    animationDirection: direction,
-                                    animationDistance: i-n,
-                                }
-                                animationData.push(animationTarget)
+                                animationData.push(this.#moveHelper(row, 'left', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
                                 break // переходим к следующему передвигаемому элементу во внешний цикл
                             }
                         }
@@ -104,14 +97,7 @@ class mainGame {
                             if (row[n].value === false) { // если находим пустой элемент
                                 row[n].value = row[i].value // перезаписываем в него значение перемещаемого элемента
                                 row[i].value = false // значение в старом элементе обнуляем
-                                let animationTarget = {
-                                    animationType: 'move',
-                                    animationTargetRow: row[i].row,
-                                    animationTargetColumn: row[i].column,
-                                    animationDirection: direction,
-                                    animationDistance: n-i,
-                                }
-                                animationData.push(animationTarget)
+                                animationData.push(this.#moveHelper(row, 'right', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
                                 break // переходим к следующему передвигаемому элементу во внешний цикл
                             }
                         }
@@ -130,14 +116,7 @@ class mainGame {
                             if (column[n].value === false) { // если находим пустой элемент
                                 column[n].value = column[i].value // перезаписываем в него значение перемещаемого элемента
                                 column[i].value = false // значение в старом элементе обнуляем
-                                let animationTarget = {
-                                    animationType: 'move',
-                                    animationTargetRow: column[i].row,
-                                    animationTargetColumn: column[i].column,
-                                    animationDirection: direction,
-                                    animationDistance: i-n,
-                                }
-                                animationData.push(animationTarget)
+                                animationData.push(this.#moveHelper(column, 'top', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
                                 break // переходим к следующему передвигаемому элементу во внешний цикл
                             }
                         }
@@ -156,14 +135,7 @@ class mainGame {
                             if (column[n].value === false) { // если находим пустой элемент
                                 column[n].value = column[i].value // перезаписываем в него значение перемещаемого элемента
                                 column[i].value = false // значение в старом элементе обнуляем
-                                let animationTarget = {
-                                    animationType: 'move',
-                                    animationTargetRow: column[i].row,
-                                    animationTargetColumn: column[i].column,
-                                    animationDirection: direction,
-                                    animationDistance: n-i,
-                                }
-                                animationData.push(animationTarget)
+                                animationData.push(this.#moveHelper(column, 'bottom', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
                                 break // переходим к следующему передвигаемому элементу во внешний цикл
                             }
                         }
@@ -184,6 +156,28 @@ class mainGame {
         }
         return animationData
     }
+    #moveHelper (targetArray, direction, i, n) {
+        if ((direction === 'left') || (direction === 'top')) {
+            let animationTarget = {
+                animationType: 'move',
+                animationTargetRow: targetArray[i].row,
+                animationTargetColumn: targetArray[i].column,
+                animationDirection: direction,
+                animationDistance: i - n,
+            }
+            return animationTarget
+        }
+        if ((direction === 'right') || (direction === 'bottom')) {
+            let animationTarget = {
+                animationType: 'move',
+                animationTargetRow: targetArray[i].row,
+                animationTargetColumn:targetArray[i].column,
+                animationDirection: direction,
+                animationDistance: n - i,
+            }
+            return animationTarget
+        }
+    } // функция для создания анимационных объектов движения
     getMove() {
         return this.#move
     }
@@ -207,16 +201,8 @@ class mainGame {
                                 targetArray[i].value *= 2 + ''
                                 targetArray[n].value = false
                                 this.addToCurrentScore(targetArray[i].value) // НОВОЕ значение добавляем к счетчику
-                                let animationTarget = {
-                                    animationType: 'sum',
-                                    animationTargetRow: targetArray[n].row,
-                                    animationTargetColumn: targetArray[n].column,
-                                    animationDirection: direction,
-                                    animationDistance: n-i,
-                                    animationNewValue: targetArray[i].value,
-                                }
-                                innerAnimationData.push(animationTarget)
-                                break // выйти во внешний цикл, тк к этому элементу уже ничего прибавлять не нужно
+                                innerAnimationData.push(this.#sumHelper(targetArray, direction, i, n)) // sumHelper создает анимационный объект сложения, затем сразу же добавляем его к массиву анимаций сложения
+                                break
                             }
                         }
                     }
@@ -241,22 +227,38 @@ class mainGame {
                                 targetArray[i].value *= 2 + ''
                                 targetArray[n].value = false
                                 this.addToCurrentScore(targetArray[i].value) // НОВОЕ значение добавляем к счетчику
-                                let animationTarget = {
-                                    animationType: 'sum',
-                                    animationTargetRow: targetArray[n].row,
-                                    animationTargetColumn: targetArray[n].column,
-                                    animationDirection: direction,
-                                    animationDistance: i-n,
-                                    animationNewValue: targetArray[i].value,
-                                }
-                                innerAnimationData.push(animationTarget)
-                                break // выйти во внешний цикл, тк к этому элементу уже ничего прибавлять не нужно
+                                innerAnimationData.push(this.#sumHelper(targetArray, direction, i, n)) // sumHelper создает анимационный объект сложения, затем сразу же добавляем его к массиву анимаций сложения
+                                break
                             }
                         }
                     }
                 }
             }
         }
-        return innerAnimationData
+        return innerAnimationData // возвращаем массив анимаций сложения
     }
+    #sumHelper (targetArray, direction, i, n) {
+        if ((direction === 'left') || (direction === 'top')) {
+            let animationTarget = {
+                animationType: 'sum',
+                animationTargetRow: targetArray[n].row,
+                animationTargetColumn: targetArray[n].column,
+                animationDirection: direction,
+                animationDistance: n-i,
+                animationNewValue: targetArray[i].value,
+            }
+            return animationTarget
+        }
+        if ((direction === 'right') || (direction === 'bottom')) {
+            let animationTarget = {
+                animationType: 'sum',
+                animationTargetRow: targetArray[n].row,
+                animationTargetColumn: targetArray[n].column,
+                animationDirection: direction,
+                animationDistance: i-n,
+                animationNewValue: targetArray[i].value,
+            }
+            return animationTarget
+        }
+    } // функция для создания анимационных объектов суммирования
 }

@@ -19,6 +19,9 @@ class htmlRender {
         this.#drawGrid(logic.getGrid())
         this.#drawElements(logic.getGrid())
         this.#newGame()
+        this.touchStart = null; //Точка начала касания
+        this.touchPosition = null; //Текущая позиция
+        this.sensitivity = 20
         this.#observers()
     }
     #drawGrid(targetArray) {
@@ -198,25 +201,7 @@ class htmlRender {
                                     movementDistance = otherAnimationData.animationDistance // ищем среди других объектов анимации тот, который создавался для перемещения результата сложения 2/2/2/2 => -/4/-/4 => -/-/4/4 => одну из четверок после сложения нужно передвинуть еще на 1. это значение хранит счетчик
                                 }
                             } // создаем два анимационных объекта для каждого из слагаемых
-                            let sumMoveAnimation1 = { // первый - статичный (относительно операции сложения)
-                                animationType: 'move',
-                                animationTargetRow: element.animationTargetRow,
-                                animationTargetColumn: +element.animationTargetColumn - element.animationDistance,
-                                animationDirection: element.animationDirection,
-                                animationDistance: movementDistance,
-                            }
-                            let sumMoveAnimation2 = { // второй - подвижный (относительно операции сложения)
-                                animationType: 'move',
-                                animationTargetRow: element.animationTargetRow,
-                                animationTargetColumn: element.animationTargetColumn,
-                                animationDirection: element.animationDirection,
-                                animationDistance: movementDistance + element.animationDistance,
-                            }
-                            targetAnimationData.push(sumMoveAnimation1) // передаем объекты в основной цикл анимирующей функции
-                            targetAnimationData.push(sumMoveAnimation2) // СНАЧАЛА статичный а ПОТОМ подвижный
-                            currentAnimationTarget.innerText = element.animationNewValue // меняем значение одного из элементов
-                            currentAnimationTarget.style.zIndex = '2' // чтобы блок с новым значением всегда был сверху
-                            defineColor(currentAnimationTarget) // меняем цвет и возвращемся во внешний цикл
+                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.#animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
                         }
                     }
                     if (element.animationDirection === 'right') {
@@ -228,25 +213,7 @@ class htmlRender {
                                     movementDistance = otherAnimationData.animationDistance
                                 }
                             }
-                            let sumMoveAnimation1 = { // двигается
-                                animationType: 'move',
-                                animationTargetRow: element.animationTargetRow,
-                                animationTargetColumn: element.animationTargetColumn,
-                                animationDirection: element.animationDirection,
-                                animationDistance: movementDistance + element.animationDistance,
-                            }
-                            let sumMoveAnimation2 = { // статичный
-                                animationType: 'move',
-                                animationTargetRow: element.animationTargetRow,
-                                animationTargetColumn: +element.animationTargetColumn + element.animationDistance,
-                                animationDirection: element.animationDirection,
-                                animationDistance: movementDistance,
-                            }
-                            targetAnimationData.push(sumMoveAnimation2) // СНАЧАЛА статичный а ПОТОМ подвижный (в зависимости от направления статичный и подвижный разные)
-                            targetAnimationData.push(sumMoveAnimation1)
-                            currentAnimationTarget.innerText = element.animationNewValue
-                            currentAnimationTarget.style.zIndex = '2' // чтобы блок с новым значением всегда был сверху
-                            defineColor(currentAnimationTarget)
+                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.#animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
                         }
                     }
                 }
@@ -261,25 +228,7 @@ class htmlRender {
                                     movementDistance = otherAnimationData.animationDistance // ищем среди других объектов анимации тот, который создавался для перемещения результата сложения 2/2/2/2 => -/4/-/4 => -/-/4/4 => одну из четверок после сложения нужно передвинуть еще на 1. это значение хранит счетчик
                                 }
                             } // создаем два анимационных объекта для каждого из слагаемых
-                            let sumMoveAnimation1 = { // первый - статичный (относительно операции сложения)
-                                animationType: 'move',
-                                animationTargetRow: +element.animationTargetRow - element.animationDistance,
-                                animationTargetColumn: element.animationTargetColumn,
-                                animationDirection: element.animationDirection,
-                                animationDistance: movementDistance,
-                            }
-                            let sumMoveAnimation2 = { // второй - подвижный (относительно операции сложения)
-                                animationType: 'move',
-                                animationTargetRow: element.animationTargetRow,
-                                animationTargetColumn: element.animationTargetColumn,
-                                animationDirection: element.animationDirection,
-                                animationDistance: movementDistance + element.animationDistance,
-                            }
-                            targetAnimationData.push(sumMoveAnimation1) // передаем объекты в основной цикл анимирующей функции
-                            targetAnimationData.push(sumMoveAnimation2) // СНАЧАЛА статичный а ПОТОМ подвижный
-                            currentAnimationTarget.innerText = element.animationNewValue // меняем значение одного из элементов
-                            currentAnimationTarget.style.zIndex = '2' // чтобы блок с новым значением всегда был сверху
-                            defineColor(currentAnimationTarget) // меняем цвет и возвращемся во внешний цикл
+                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.#animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
                         }
                     }
                     if (element.animationDirection === 'bottom') {
@@ -291,30 +240,25 @@ class htmlRender {
                                     movementDistance = otherAnimationData.animationDistance
                                 }
                             }
-                            let sumMoveAnimation1 = { // двигается
-                                animationType: 'move',
-                                animationTargetRow: element.animationTargetRow,
-                                animationTargetColumn: element.animationTargetColumn,
-                                animationDirection: element.animationDirection,
-                                animationDistance: movementDistance + element.animationDistance,
-                            }
-                            let sumMoveAnimation2 = { // статичный
-                                animationType: 'move',
-                                animationTargetRow: +element.animationTargetRow + element.animationDistance,
-                                animationTargetColumn: element.animationTargetColumn,
-                                animationDirection: element.animationDirection,
-                                animationDistance: movementDistance,
-                            }
-                            targetAnimationData.push(sumMoveAnimation2) // СНАЧАЛА статичный а ПОТОМ подвижный (в зависимости от направления статичный и подвижный разные)
-                            targetAnimationData.push(sumMoveAnimation1)
-                            currentAnimationTarget.innerText = element.animationNewValue
-                            currentAnimationTarget.style.zIndex = '2' // чтобы блок с новым значением всегда был сверху
-                            defineColor(currentAnimationTarget)
+                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.#animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
                         }
                     }
                 }
             }
         }
+    }
+    #animateSumHelper (animationElement, direction, movementDistance, currentAnimationTarget) {
+        let sumMoveAnimation = {
+            animationType: 'move',
+            animationDirection: direction,
+            animationDistance: movementDistance + animationElement.animationDistance,
+            animationTargetRow: animationElement.animationTargetRow,
+            animationTargetColumn: animationElement.animationTargetColumn,
+        }
+        currentAnimationTarget.innerText = animationElement.animationNewValue
+        currentAnimationTarget.style.zIndex = '2' // чтобы блок с новым значением всегда был сверху
+        defineColor(currentAnimationTarget)
+        return sumMoveAnimation
     }
     getAnimate () {
         return this.#animate
@@ -368,6 +312,47 @@ class htmlRender {
             drawElements(logic.getGrid())
         }
     }
+    touchStart (event) {
+        render.touchStart = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY } //Получаем текущую позицию касания
+        render.touchPosition = { x: render.touchStart.x, y: render.touchStart.y }
+    }
+    touchMove (event) {
+        render.touchPosition = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY }
+    }
+    touchEnd () {
+        let swipeType = render.checkAction() //Определяем, какой жест совершил пользователь
+        render.touchStart = null //Очищаем позиции
+        render.touchPosition = null
+        return swipeType
+    }
+    checkAction() {
+        let d = { //Получаем расстояния от начальной до конечной точек по обеим осям
+            x: render.touchStart.x - render.touchPosition.x,
+            y: render.touchStart.y - render.touchPosition.y
+        }
+        let swipeType //Сообщение
+        if(Math.abs(d.x) > Math.abs(d.y)) { //Проверяем, движение по какой оси было длиннее
+            if(Math.abs(d.x) > render.sensitivity) {//Проверяем, было ли движение достаточно длинным
+                if(d.x > 0) { //Если значение больше нуля, значит пользователь двигал пальцем справа налево
+                    swipeType = "Swipe left"
+                }
+                else { //Иначе он двигал им слева направо
+                    swipeType = "Swipe right"
+                }
+            }
+        }
+        else { //Аналогичные проверки для вертикальной оси
+            if(Math.abs(d.y) > render.sensitivity) {
+                if(d.y > 0) { //Свайп вверх
+                    swipeType = "Swipe up"
+                }
+                else { //Свайп вниз
+                    swipeType = "Swipe down"
+                }
+            }
+        }
+        return swipeType
+    }
 }
 
 const logic = new mainGame(logicOptions)
@@ -375,9 +360,9 @@ const render = new htmlRender(htmlOptions)
 
 function listeners (render, logic) {
     const animate = render.getAnimate().bind(render)
+    const move = logic.getMove().bind(logic)
     window.addEventListener('keydown', function(event) {
         event.preventDefault()
-        const move = logic.getMove().bind(logic)
         if (logic.animationDone) { // проверяем завершилась ли предыдущая анимация
             if (event.code === 'ArrowLeft') {
                 let animationArray = move('left')
@@ -397,6 +382,31 @@ function listeners (render, logic) {
             }
         }
     })
+    window.addEventListener("touchstart", function (e) {
+        render.touchStart(e)
+    }) //Начало касания
+    window.addEventListener("touchmove", function (e) {
+        render.touchMove(e)
+    }) //Движение пальцем по экрану
+    window.addEventListener("touchend", function (e) {
+        if (render.touchEnd(e) === "Swipe left") {
+            let animationArray = move('left')
+            animate(animationArray)
+        }
+        if (render.touchEnd(e) === "Swipe right") {
+            let animationArray = move('right')
+            animate(animationArray)
+        }
+        if (render.touchEnd(e) === "Swipe up") {
+            let animationArray = move('top')
+            animate(animationArray)
+        }
+        if (render.touchEnd(e) === "Swipe down") {
+            let animationArray = move('bottom')
+            animate(animationArray)
+        }
+    })
 }
+
 
 listeners(render, logic)
