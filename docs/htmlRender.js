@@ -23,7 +23,7 @@ class htmlRender {
         this.touchPosition = null; //Текущая позиция
         this.sensitivity = 20
         this.#observers()
-        this.touchStart = function (event) {
+        this.touchStartFunc = function (event) {
             this.touchStart = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY } //Получаем текущую позицию касания
             this.touchPosition = { x: this.touchStart.x, y: this.touchStart.y }
         }
@@ -382,13 +382,13 @@ function listeners (render, logic) {
             }
         }
     })
-    window.addEventListener("touchstart", function (e) {
-        render.touchStart(e)
+    htmlOptions.rootElement.firstElementChild.addEventListener("touchstart", function (e) {
+        render.touchStartFunc(e)
     }) //Начало касания
-    window.addEventListener("touchmove", function (e) {
+    htmlOptions.rootElement.firstElementChild.addEventListener("touchmove", function (e) {
         render.touchMove(e)
     }) //Движение пальцем по экрану
-    window.addEventListener("touchend", function (e) {
+    htmlOptions.rootElement.firstElementChild.addEventListener("touchend", function (e) {
         e.preventDefault()
         if (render.touchEnd(e) === "Swipe left") {
             let animationArray = move('left')
