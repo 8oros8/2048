@@ -23,6 +23,47 @@ class htmlRender {
         this.touchPosition = null; //Текущая позиция
         this.sensitivity = 20
         this.#observers()
+        this.touchStart = function (event) {
+            this.touchStart = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY } //Получаем текущую позицию касания
+            this.touchPosition = { x: this.touchStart.x, y: this.touchStart.y }
+        }
+        this.touchMove = function (event) {
+            this.touchPosition = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY }
+        }
+        this.touchEnd = function () {
+            let swipeType = this.checkAction() //Определяем, какой жест совершил пользователь
+            this.touchStart = null //Очищаем позиции
+            this.touchPosition = null
+            return swipeType
+        }
+        this.checkAction = function () {
+            let d = { //Получаем расстояния от начальной до конечной точек по обеим осям
+                x: this.touchStart.x - this.touchPosition.x,
+                y: this.touchStart.y - this.touchPosition.y
+            }
+            let swipeType //Сообщение
+            if(Math.abs(d.x) > Math.abs(d.y)) { //Проверяем, движение по какой оси было длиннее
+                if(Math.abs(d.x) > this.sensitivity) {//Проверяем, было ли движение достаточно длинным
+                    if(d.x > 0) { //Если значение больше нуля, значит пользователь двигал пальцем справа налево
+                        swipeType = "Swipe left"
+                    }
+                    else { //Иначе он двигал им слева направо
+                        swipeType = "Swipe right"
+                    }
+                }
+            }
+            else { //Аналогичные проверки для вертикальной оси
+                if(Math.abs(d.y) > this.sensitivity) {
+                    if(d.y > 0) { //Свайп вверх
+                        swipeType = "Swipe up"
+                    }
+                    else { //Свайп вниз
+                        swipeType = "Swipe down"
+                    }
+                }
+            }
+            return swipeType
+        }
     }
     #drawGrid(targetArray) {
         const mainTable = document.createElement('table')
@@ -312,47 +353,6 @@ class htmlRender {
             drawElements(logic.getGrid())
         }
     }
-    touchStart (event) {
-        render.touchStart = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY } //Получаем текущую позицию касания
-        render.touchPosition = { x: render.touchStart.x, y: render.touchStart.y }
-    }
-    touchMove (event) {
-        render.touchPosition = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY }
-    }
-    touchEnd () {
-        let swipeType = render.checkAction() //Определяем, какой жест совершил пользователь
-        render.touchStart = null //Очищаем позиции
-        render.touchPosition = null
-        return swipeType
-    }
-    checkAction() {
-        let d = { //Получаем расстояния от начальной до конечной точек по обеим осям
-            x: render.touchStart.x - render.touchPosition.x,
-            y: render.touchStart.y - render.touchPosition.y
-        }
-        let swipeType //Сообщение
-        if(Math.abs(d.x) > Math.abs(d.y)) { //Проверяем, движение по какой оси было длиннее
-            if(Math.abs(d.x) > render.sensitivity) {//Проверяем, было ли движение достаточно длинным
-                if(d.x > 0) { //Если значение больше нуля, значит пользователь двигал пальцем справа налево
-                    swipeType = "Swipe left"
-                }
-                else { //Иначе он двигал им слева направо
-                    swipeType = "Swipe right"
-                }
-            }
-        }
-        else { //Аналогичные проверки для вертикальной оси
-            if(Math.abs(d.y) > render.sensitivity) {
-                if(d.y > 0) { //Свайп вверх
-                    swipeType = "Swipe up"
-                }
-                else { //Свайп вниз
-                    swipeType = "Swipe down"
-                }
-            }
-        }
-        return swipeType
-    }
 }
 
 const logic = new mainGame(logicOptions)
@@ -389,6 +389,7 @@ function listeners (render, logic) {
         render.touchMove(e)
     }) //Движение пальцем по экрану
     window.addEventListener("touchend", function (e) {
+        e.preventDefault()
         if (render.touchEnd(e) === "Swipe left") {
             let animationArray = move('left')
             animate(animationArray)
