@@ -378,6 +378,31 @@ function listeners (render, logic) {
             }
         }
     })
+    htmlOptions.rootElement.firstElementChild.addEventListener("touchstart", function (e) {
+        render.touchStartFunc(e)
+    }) //Начало касания
+    htmlOptions.rootElement.firstElementChild.addEventListener("touchmove", function (e) {
+        render.touchMove(e)
+    }) //Движение пальцем по экрану
+    htmlOptions.rootElement.firstElementChild.addEventListener("touchend", function (e) {
+        e.preventDefault()
+        if (render.touchEnd(e) === "Swipe left") {
+            let animationArray = move('left')
+            animate(animationArray)
+        }
+        if (render.touchEnd(e) === "Swipe right") {
+            let animationArray = move('right')
+            animate(animationArray)
+        }
+        if (render.touchEnd(e) === "Swipe up") {
+            let animationArray = move('top')
+            animate(animationArray)
+        }
+        if (render.touchEnd(e) === "Swipe down") {
+            let animationArray = move('bottom')
+            animate(animationArray)
+        }
+    })
 }
 
 
