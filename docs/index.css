@@ -15,7 +15,8 @@ body {
 #headerContainer {
     display: flex;
     height: 100%;
-    width: 50%;
+    margin-right: auto;
+    margin-left: auto;
     align-items: center;
     padding: 10px;
 }
@@ -26,7 +27,6 @@ body {
     width: 33%;
     height: 45%;
     text-align: center;
-    line-height: 45px;
     border-radius: 10px;
     font-family: 'Montserrat', sans-serif;
     font-size: 11px;
@@ -49,7 +49,6 @@ body {
     width: 33%;
     height: 45%;
     text-align: center;
-    line-height: 45px;
     border-radius: 10px;
     margin: 10px 20px;
     font-family: 'Montserrat', sans-serif;
@@ -70,7 +69,6 @@ body {
 }
 #gameName {
     font-family: 'Montserrat', sans-serif;
-    font-size: 5em;
     display: flex;
     color: whitesmoke;
 }
@@ -87,7 +85,6 @@ body {
     height: 100%;
     width: 100%;
     background-color: #beaf9f;
-    border-spacing: 20px;
     border-radius: 10px;
 }
 
@@ -148,6 +145,21 @@ td {
 /* Portrait tablets and medium desktops */
 /* Portrait tablets and small desktops */
 @media screen and (min-width: 768px) {
+    #headerContainer {
+        width: 620px;
+    }
+    #gameName {
+        font-size: 5em;
+    }
+    #newGameButton {
+        line-height: 45px;
+    }
+    #scoreWrapper {
+        line-height: 45px;
+    }
+    #mainTable {
+        border-spacing: 20px;
+    }
     tr {
         height: 100px;
     }
@@ -159,6 +171,21 @@ td {
 
 /* Landscape phones and portrait tablets */
 @media screen and (max-width: 767px) {
+    #headerContainer {
+        width: 410px;
+    }
+    #gameName {
+        font-size: 4em;
+    }
+    #newGameButton {
+        line-height: 30px;
+    }
+    #scoreWrapper {
+        line-height: 30px;
+    }
+    #mainTable {
+        border-spacing: 10px;
+    }
     tr {
         height: 70px;
     }
@@ -170,6 +197,21 @@ td {
 
 /* Landscape phones and smaller */
 @media screen and (max-width: 480px) {
+    #headerContainer {
+        width: 300px;
+    }
+    #gameName {
+        font-size: 3em;
+    }
+    #newGameButton {
+        line-height: 15px;
+    }
+    #scoreWrapper {
+        line-height: 15px;
+    }
+    #mainTable {
+        border-spacing: 10px;
+    }
     tr {
         height: 48px;
     }

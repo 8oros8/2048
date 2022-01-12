@@ -10,22 +10,22 @@ const logicOptions = {
 }
 
 class mainGame {
-    #grid = [];
+    grid = [];
     getGrid() {
-        return this.#grid
+        return this.grid
     }
     constructor(options) {
-        this.#grid = this.#createGrid(options.gridHeight, options.gridWidth)
+        this.grid = this.createGrid(options.gridHeight, options.gridWidth)
         this.currentScore = 0
         this.animationDone = true
     }
     addToCurrentScore(value) {
         this.currentScore += value
     }
-    #createGrid(height, width) {
+    createGrid(height, width) {
         for (let i = 1; i <= height; i++) {
             let row = []
-            this.#grid.push(row)
+            this.grid.push(row)
             for (let n = 1; n <= width; n++) {
                 let cell = {
                     value: false,
@@ -35,9 +35,9 @@ class mainGame {
                 row.push(cell)
             }
         }
-        return this.#grid
+        return this.grid
     }
-    #elementCreate(targetGrid) { // Создаем два новых элемента; "2" с шансом 90%, "4" с шансом 10%
+    elementCreate(targetGrid) { // Создаем два новых элемента; "2" с шансом 90%, "4" с шансом 10%
         let newElementValue
         if (getRandomInt(0,10) === 9) {
             newElementValue = 4
@@ -54,22 +54,22 @@ class mainGame {
         return targetGrid[rowIndex][columnIndex]
     }
     getElementCreate() {
-        return this.#elementCreate
+        return this.elementCreate
     }
-    #move(direction) {
-        const horizontalRows = this.#grid // массив горизонтальных рядов таблицы
+    move(direction) {
+        const horizontalRows = this.grid // массив горизонтальных рядов таблицы
         let animationData = []
         let verticalColumns = []
-        for (let i = 0; i < this.#grid[0].length; i++) {
+        for (let i = 0; i < this.grid[0].length; i++) {
             let column = []
-            for (let row of this.#grid) {
+            for (let row of this.grid) {
                 column.push(row[i])
             }
             verticalColumns.push(column)
         }
         if (direction === 'left') {
             for (let row of horizontalRows) { // проходимся по каждому из рядов
-                for (let element of this.#sum(row, 'left')) {
+                for (let element of this.sum(row, 'left')) {
                     animationData.push(element)
                 }
                 for (let i = 1; i < row.length; i++) { // нулевой элемент не учитываем, он и так в крайней левой позиции
@@ -78,7 +78,7 @@ class mainGame {
                             if (row[n].value === false) { // если находим пустой элемент
                                 row[n].value = row[i].value // перезаписываем в него значение перемещаемого элемента
                                 row[i].value = false // значение в старом элементе обнуляем
-                                animationData.push(this.#moveHelper(row, 'left', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
+                                animationData.push(this.moveHelper(row, 'left', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
                                 break // переходим к следующему передвигаемому элементу во внешний цикл
                             }
                         }
@@ -88,7 +88,7 @@ class mainGame {
         }
         if (direction === 'right') {
             for (let row of horizontalRows) { // проходимся по каждому из рядов
-                for (let element of this.#sum(row, 'right')) {
+                for (let element of this.sum(row, 'right')) {
                     animationData.push(element)
                 }
                 for (let i = row.length-2; i >= 0; i--) { // тк двигаемся слева направо, начинаем с с конца массива (последний элемент не учитываем,тк он в любом случае в крайнем правом положении)
@@ -97,7 +97,7 @@ class mainGame {
                             if (row[n].value === false) { // если находим пустой элемент
                                 row[n].value = row[i].value // перезаписываем в него значение перемещаемого элемента
                                 row[i].value = false // значение в старом элементе обнуляем
-                                animationData.push(this.#moveHelper(row, 'right', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
+                                animationData.push(this.moveHelper(row, 'right', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
                                 break // переходим к следующему передвигаемому элементу во внешний цикл
                             }
                         }
@@ -107,7 +107,7 @@ class mainGame {
         }
         if (direction === 'top') {
             for (let column of verticalColumns) { // проходимся по каждой из колонок
-                for (let element of this.#sum(column, 'top')) {
+                for (let element of this.sum(column, 'top')) {
                     animationData.push(element)
                 }
                 for (let i = 1; i < column.length; i++) { // нулевой элемент не учитываем, он и так в крайней высшей (?) позиции
@@ -116,7 +116,7 @@ class mainGame {
                             if (column[n].value === false) { // если находим пустой элемент
                                 column[n].value = column[i].value // перезаписываем в него значение перемещаемого элемента
                                 column[i].value = false // значение в старом элементе обнуляем
-                                animationData.push(this.#moveHelper(column, 'top', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
+                                animationData.push(this.moveHelper(column, 'top', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
                                 break // переходим к следующему передвигаемому элементу во внешний цикл
                             }
                         }
@@ -126,7 +126,7 @@ class mainGame {
         }
         if (direction === 'bottom') {
             for (let column of verticalColumns) { // проходимся по каждой из колонок
-                for (let element of this.#sum(column, 'bottom')) {
+                for (let element of this.sum(column, 'bottom')) {
                     animationData.push(element)
                 }
                 for (let i = column.length-2; i >= 0; i--) { // тк двигаемся сверху вниз, начинаем с с конца массива (последний элемент не учитываем,тк он в любом случае в крайнем нижнем положении)
@@ -135,7 +135,7 @@ class mainGame {
                             if (column[n].value === false) { // если находим пустой элемент
                                 column[n].value = column[i].value // перезаписываем в него значение перемещаемого элемента
                                 column[i].value = false // значение в старом элементе обнуляем
-                                animationData.push(this.#moveHelper(column, 'bottom', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
+                                animationData.push(this.moveHelper(column, 'bottom', i, n)) // moveHelper создает анимационный объект движения, затем сразу же добавляем его к массиву анимаций передвижения
                                 break // переходим к следующему передвигаемому элементу во внешний цикл
                             }
                         }
@@ -145,7 +145,7 @@ class mainGame {
         }
         if (animationData.length > 0) {
             this.animationDone = false // если в массив анимаций были добавлены новые элементы, обнуляем индикатор выполнения анимаций
-            let newElement = this.#elementCreate(this.#grid)
+            let newElement = this.elementCreate(this.grid)
             let animationTarget = {
                 animationType: 'append',
                 animationTargetRow: newElement.row,
@@ -156,7 +156,7 @@ class mainGame {
         }
         return animationData
     }
-    #moveHelper (targetArray, direction, i, n) {
+    moveHelper (targetArray, direction, i, n) {
         if ((direction === 'left') || (direction === 'top')) {
             let animationTarget = {
                 animationType: 'move',
@@ -179,9 +179,9 @@ class mainGame {
         }
     } // функция для создания анимационных объектов движения
     getMove() {
-        return this.#move
+        return this.move
     }
-    #sum(targetArray, direction) { // В качестве аргумента передаем массив элементов (колонку или ряд) в котором содержится элемент и счетчик изменений
+    sum(targetArray, direction) { // В качестве аргумента передаем массив элементов (колонку или ряд) в котором содержится элемент и счетчик изменений
         let innerAnimationData = []
         if ((direction === 'left') || (direction === 'top')) { // для этих направлений двигаемся от начала массива к концу
             for (let i = 0; i < targetArray.length; i++) {
@@ -201,7 +201,7 @@ class mainGame {
                                 targetArray[i].value *= 2 + ''
                                 targetArray[n].value = false
                                 this.addToCurrentScore(targetArray[i].value) // НОВОЕ значение добавляем к счетчику
-                                innerAnimationData.push(this.#sumHelper(targetArray, direction, i, n)) // sumHelper создает анимационный объект сложения, затем сразу же добавляем его к массиву анимаций сложения
+                                innerAnimationData.push(this.sumHelper(targetArray, direction, i, n)) // sumHelper создает анимационный объект сложения, затем сразу же добавляем его к массиву анимаций сложения
                                 break
                             }
                         }
@@ -227,7 +227,7 @@ class mainGame {
                                 targetArray[i].value *= 2 + ''
                                 targetArray[n].value = false
                                 this.addToCurrentScore(targetArray[i].value) // НОВОЕ значение добавляем к счетчику
-                                innerAnimationData.push(this.#sumHelper(targetArray, direction, i, n)) // sumHelper создает анимационный объект сложения, затем сразу же добавляем его к массиву анимаций сложения
+                                innerAnimationData.push(this.sumHelper(targetArray, direction, i, n)) // sumHelper создает анимационный объект сложения, затем сразу же добавляем его к массиву анимаций сложения
                                 break
                             }
                         }
@@ -237,7 +237,7 @@ class mainGame {
         }
         return innerAnimationData // возвращаем массив анимаций сложения
     }
-    #sumHelper (targetArray, direction, i, n) {
+    sumHelper (targetArray, direction, i, n) {
         if ((direction === 'left') || (direction === 'top')) {
             let animationTarget = {
                 animationType: 'sum',

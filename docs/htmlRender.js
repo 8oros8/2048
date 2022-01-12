@@ -11,18 +11,18 @@ const htmlOptions = {
 }
 
 class htmlRender {
-    #rootElement
-    #scoreWrapper
+    rootElement
+    scoreWrapper
     constructor(options) {
-        this.#rootElement = options.rootElement
-        this.#scoreWrapper = options.scoreWrapper
-        this.#drawGrid(logic.getGrid())
-        this.#drawElements(logic.getGrid())
-        this.#newGame()
+        this.rootElement = options.rootElement
+        this.scoreWrapper = options.scoreWrapper
+        this.drawGrid(logic.getGrid())
+        this.drawElements(logic.getGrid())
+        this.newGame()
         this.touchStart = null; //Точка начала касания
         this.touchPosition = null; //Текущая позиция
         this.sensitivity = 20
-        this.#observers()
+        this.observers()
         this.touchStartFunc = function (event) {
             this.touchStart = { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY } //Получаем текущую позицию касания
             this.touchPosition = { x: this.touchStart.x, y: this.touchStart.y }
@@ -65,7 +65,7 @@ class htmlRender {
             return swipeType
         }
     }
-    #drawGrid(targetArray) {
+    drawGrid(targetArray) {
         const mainTable = document.createElement('table')
         mainTable.id = 'mainTable'
         htmlOptions.rootElement.append(mainTable)
@@ -81,7 +81,7 @@ class htmlRender {
             }
         }
     }
-    #drawElements(target) {
+    drawElements(target) {
         let htmlRows = htmlOptions.rootElement.firstElementChild.firstElementChild.querySelectorAll('tr')
         if (Array.isArray(target)) {
             for (let row of target) {
@@ -118,9 +118,9 @@ class htmlRender {
         }
     }
     getDrawElements() {
-        return this.#drawElements
+        return this.drawElements
     }
-    #animate(targetAnimationData) {
+    animate(targetAnimationData) {
         const drawElements = this.getDrawElements()
         let htmlRows = document.querySelectorAll('tr')
         let htmlColumns = []
@@ -238,7 +238,7 @@ class htmlRender {
                                     movementDistance = otherAnimationData.animationDistance // ищем среди других объектов анимации тот, который создавался для перемещения результата сложения 2/2/2/2 => -/4/-/4 => -/-/4/4 => одну из четверок после сложения нужно передвинуть еще на 1. это значение хранит счетчик
                                 }
                             } // создаем два анимационных объекта для каждого из слагаемых
-                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.#animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
+                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
                         }
                     }
                     if (element.animationDirection === 'right') {
@@ -250,7 +250,7 @@ class htmlRender {
                                     movementDistance = otherAnimationData.animationDistance
                                 }
                             }
-                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.#animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
+                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
                         }
                     }
                 }
@@ -265,7 +265,7 @@ class htmlRender {
                                     movementDistance = otherAnimationData.animationDistance // ищем среди других объектов анимации тот, который создавался для перемещения результата сложения 2/2/2/2 => -/4/-/4 => -/-/4/4 => одну из четверок после сложения нужно передвинуть еще на 1. это значение хранит счетчик
                                 }
                             } // создаем два анимационных объекта для каждого из слагаемых
-                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.#animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
+                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
                         }
                     }
                     if (element.animationDirection === 'bottom') {
@@ -277,14 +277,14 @@ class htmlRender {
                                     movementDistance = otherAnimationData.animationDistance
                                 }
                             }
-                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.#animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
+                            targetAnimationData.splice(targetAnimationData.length-1, 0 , this.animateSumHelper(element, element.animationDirection, movementDistance, currentAnimationTarget))
                         }
                     }
                 }
             }
         }
     }
-    #animateSumHelper (animationElement, direction, movementDistance, currentAnimationTarget) {
+    animateSumHelper (animationElement, direction, movementDistance, currentAnimationTarget) {
         let sumMoveAnimation = {
             animationType: 'move',
             animationDirection: direction,
@@ -298,9 +298,9 @@ class htmlRender {
         return sumMoveAnimation
     }
     getAnimate () {
-        return this.#animate
+        return this.animate
     }
-    #observers() {
+    observers() {
         const generalObserver = new MutationObserver(function ()  { // обновление счета при любых изменениях
             if (logic.currentScore !== parseInt(htmlOptions.scoreWrapper.firstElementChild.innerText)) {
                 htmlOptions.scoreWrapper.firstElementChild.innerText = logic.currentScore
@@ -327,9 +327,9 @@ class htmlRender {
             characterData: true
         })
     }
-    #newGame() {
+    newGame() {
         const newGameButton = document.getElementById('newGameButton')
-        const drawElements = this.#drawElements
+        const drawElements = this.drawElements
         const elementCreate = logic.getElementCreate()
         newGameButton.onclick = function () {
             let currentElements = document.getElementsByClassName('basicElement')
