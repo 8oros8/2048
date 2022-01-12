@@ -68,8 +68,6 @@ class htmlRender {
     #drawGrid(targetArray) {
         const mainTable = document.createElement('table')
         mainTable.id = 'mainTable'
-        mainTable.style.height = 120*targetArray.length + 20 + 'px'
-        mainTable.style.width = 120*targetArray[0].length + 20 + 'px'
         htmlOptions.rootElement.append(mainTable)
         const tBody = document.createElement('tbody')
         mainTable.append(tBody)
@@ -79,8 +77,6 @@ class htmlRender {
             tBody.append(tr)
             for (let n = 0; n < targetArray[i].length; n++) {
                 let td = document.createElement('td')
-                td.style.height = '100px'
-                td.style.width = '100px'
                 tr.append(td)
             }
         }

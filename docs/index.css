@@ -2,28 +2,29 @@
     font-family: 'Montserrat', sans-serif;
 }
 body {
-    height: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 100px;
     background-image: url("background.jpg");
-    margin: 0;
 }
 #headerContainer {
     display: flex;
-    flex-direction: row;
-    height: 100px;
-    width: 500px;
-    justify-content: center;
+    height: 100%;
+    width: 50%;
     align-items: center;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 5px;
+    padding: 10px;
 }
 #scoreWrapper {
     text-decoration: none;
     outline: none;
     display: inline-block;
-    width: 140px;
-    height: 45px;
+    width: 33%;
+    height: 45%;
     text-align: center;
     line-height: 45px;
     border-radius: 10px;
@@ -45,8 +46,8 @@ body {
     text-decoration: none;
     outline: none;
     display: inline-block;
-    width: 140px;
-    height: 45px;
+    width: 33%;
+    height: 45%;
     text-align: center;
     line-height: 45px;
     border-radius: 10px;
@@ -78,18 +79,18 @@ body {
     justify-content: center;
     margin-right: auto;
     margin-left: auto;
-    padding: 5px;
+    padding: 10px;
 }
 #mainTable {
     display: flex;
     justify-content: space-evenly;
+    height: 100%;
+    width: 100%;
     background-color: #beaf9f;
     border-spacing: 20px;
     border-radius: 10px;
 }
-tr {
-    height: 100px;
-}
+
 td {
     position: relative;
     border-radius: 10px;
@@ -100,8 +101,8 @@ td {
     position: absolute;
     z-index: 1;
     display: flex;
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     top: 0;
     bottom: 0;
     left: 0;
@@ -140,5 +141,40 @@ td {
     }
     100% {
         box-shadow: 0 0 0 0 rgba(228, 25, 49, 0);
+    }
+}
+
+/* Large desktops and laptops */
+/* Portrait tablets and medium desktops */
+/* Portrait tablets and small desktops */
+@media screen and (min-width: 768px) {
+    tr {
+        height: 100px;
+    }
+    td {
+        height: 100px;
+        width: 100px;
+    }
+}
+
+/* Landscape phones and portrait tablets */
+@media screen and (max-width: 767px) {
+    tr {
+        height: 70px;
+    }
+    td {
+        height: 70px;
+        width: 70px;
+    }
+}
+
+/* Landscape phones and smaller */
+@media screen and (max-width: 480px) {
+    tr {
+        height: 48px;
+    }
+    td {
+        height: 48px;
+        width: 48px;
     }
 }
