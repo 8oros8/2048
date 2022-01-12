@@ -72,6 +72,15 @@ class htmlRender {
         }
         this.animate = function (targetAnimationData) {
             const drawElements = this.getDrawElements()
+            if (window.matchMedia('(min-width: 768px)').matches) {
+                this.oneCellDistance = 120
+            }
+            if (window.matchMedia('(max-width: 767px)').matches) {
+                this.oneCellDistance = 80
+            }
+            if (window.matchMedia('(max-width: 480px)').matches) {
+                this.oneCellDistance = 58
+            }
             let htmlRows = document.querySelectorAll('tr')
             let htmlColumns = []
             for (let i = 0; i < htmlOptions.rootElement.firstElementChild.firstElementChild.firstElementChild.childElementCount; i++) { // количество колонок === количество элементов tr. доступ к tr через root element
@@ -91,7 +100,7 @@ class htmlRender {
                                 setTimeout(function () {
                                     currentAnimationTarget.style.animation = 'none'
                                 })
-                                currentAnimationTarget.style.left = 120 * element.animationDistance + 'px'
+                                currentAnimationTarget.style.left = this.oneCellDistance * element.animationDistance + 'px'
                                 setTimeout(function () {
                                     let targetHtmlCell = currentRowHtmlCells[(element.animationTargetColumn - 1) + element.animationDistance] // тк двигаемся к концу массива (направо), складываем
                                     targetHtmlCell.appendChild(currentAnimationTarget)
@@ -111,7 +120,7 @@ class htmlRender {
                                 setTimeout(function () {
                                     currentAnimationTarget.style.animation = 'none'
                                 })
-                                currentAnimationTarget.style.left = -240 * element.animationDistance + 'px'
+                                currentAnimationTarget.style.left = -2 * this.oneCellDistance * element.animationDistance + 'px'
                                 setTimeout(function () {
                                     let targetHtmlCell = currentRowHtmlCells[(element.animationTargetColumn - 1) - element.animationDistance] // тк двигаемся к началу массива (налево), вычитаем
                                     targetHtmlCell.appendChild(currentAnimationTarget)
@@ -134,7 +143,7 @@ class htmlRender {
                                 setTimeout(function () {
                                     currentAnimationTarget.style.animation = 'none'
                                 })
-                                currentAnimationTarget.style.top = -120 * element.animationDistance + 'px'
+                                currentAnimationTarget.style.top = -this.oneCellDistance * element.animationDistance + 'px'
                                 setTimeout(function () {
                                     let targetHtmlCell = currentColumnsHtmlCells[(element.animationTargetRow - 1) - element.animationDistance]
                                     targetHtmlCell.appendChild(currentAnimationTarget)
@@ -154,7 +163,7 @@ class htmlRender {
                                 setTimeout(function () {
                                     currentAnimationTarget.style.animation = 'none'
                                 })
-                                currentAnimationTarget.style.top = 120 * element.animationDistance + 'px'
+                                currentAnimationTarget.style.top = this.oneCellDistance * element.animationDistance + 'px'
                                 setTimeout(function () {
                                     let targetHtmlCell = currentColumnsHtmlCells[(element.animationTargetRow - 1) + element.animationDistance]
                                     targetHtmlCell.appendChild(currentAnimationTarget)
