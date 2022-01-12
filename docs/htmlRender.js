@@ -11,8 +11,6 @@ const htmlOptions = {
 }
 
 class htmlRender {
-    rootElement
-    scoreWrapper
     constructor(options) {
         this.rootElement = options.rootElement
         this.scoreWrapper = options.scoreWrapper
