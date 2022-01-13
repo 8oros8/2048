@@ -474,15 +474,15 @@ function listeners (render, logic) {
             }
         }
     })
-    document.body.addEventListener("touchstart", function (e) {
+    htmlOptions.rootElement.addEventListener("touchstart", function (e) {
         e.preventDefault()
         render.touchStartFunc(e)
     }) //Начало касания
-    document.body.addEventListener("touchmove", function (e) {
+    htmlOptions.rootElement.addEventListener("touchmove", function (e) {
         e.preventDefault()
         render.touchMove(e)
     }) //Движение пальцем по экрану
-    document.body.addEventListener("touchend", function (e) {
+    htmlOptions.rootElement.addEventListener("touchend", function (e) {
         render.touchEnd(e)
     }) // Пользователь отпустил экран
 }
