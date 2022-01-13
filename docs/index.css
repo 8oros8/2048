@@ -1,11 +1,15 @@
 * {
     font-family: 'Montserrat', sans-serif;
 }
+html {
+    height: 100%;
+}
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 85%;
+    justify-content: center;
+    height: 100%;
     margin-left: auto;
     margin-right: auto;
     background-image: url("background.jpg");
