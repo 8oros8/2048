@@ -290,7 +290,7 @@ class htmlRender {
             const newGameButton = document.getElementById('newGameButton')
             const drawElements = this.drawElements
             const elementCreate = logic.getElementCreate()
-            const startNewGame = function () {
+            newGameButton.onclick = function () {
                 let currentElements = document.getElementsByClassName('basicElement')
                 while (currentElements[0]) {
                     currentElements[0].remove()
@@ -307,23 +307,17 @@ class htmlRender {
                 elementCreate(logic.getGrid())
                 drawElements(logic.getGrid())
             }
-            newGameButton.ontouchstart = function () {
-                startNewGame()
-            }
+            newGameButton.addEventListener()
             newGameButton.ontouchend = function () {
                 newGameButton.style.background = 'whitesmoke'
                 newGameButton.style.boxShadow = '0 8px 15px rgb(0 0 0 / 10%)'
                 newGameButton.style.color = 'black'
-            }
-            newGameButton.onclick = function () {
-                startNewGame()
             }
         }
         this.leftImpossible = 0
         this.downImpossible = 0
         this.upImpossible = 0
         this.rightImpossible = 0
-        this.movementImpossible = this.leftImpossible + this.downImpossible + this.upImpossible + this.rightImpossible
 
         this.drawGrid(logic.getGrid());
         this.drawElements(logic.getGrid());
