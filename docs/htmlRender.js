@@ -307,6 +307,11 @@ class htmlRender {
                 elementCreate(logic.getGrid())
                 drawElements(logic.getGrid())
             }
+            newGameButton.ontouchstart = function () {
+                newGameButton.style.background = '#2EE59D'
+                newGameButton.style.boxShadow = '0 15px 20px rgba(46, 229, 157, 0.4)'
+                newGameButton.style.color = '#fff'
+            }
             newGameButton.ontouchend = function () {
                 newGameButton.style.background = 'whitesmoke'
                 newGameButton.style.boxShadow = '0 8px 15px rgb(0 0 0 / 10%)'
