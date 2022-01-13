@@ -326,36 +326,34 @@ class htmlRender {
         this.drawGrid(logic.getGrid());
         this.drawElements(logic.getGrid());
         this.newGame();
-        this.touchStart = null; //Точка начала касания
-        this.touchPosition = null; //Текущая позиция
         this.sensitivity = 20;
         this.observers();
         this.touchStartFunc = function (event) {
-            this.touchStart = {
+            touchStart = {
                 x: event.changedTouches[0].clientX,
                 y: event.changedTouches[0].clientY
             } //Получаем текущую позицию касания
-            this.touchPosition = {
-                x: this.touchStart.x,
-                y: this.touchStart.y
+            touchPosition = {
+                x: touchStart.x,
+                y: touchStart.y
             }
         };
         this.touchMove = function (event) {
-            this.touchPosition = {
+            touchPosition = {
                 x: event.changedTouches[0].clientX,
                 y: event.changedTouches[0].clientY,
             }
         };
         this.touchEnd = function () {
             let swipeType = this.checkAction(); //Определяем, какой жест совершил пользователь
-            this.touchStart = null; //Очищаем позиции
-            this.touchPosition = null;
+            touchStart = null; //Очищаем позиции
+            touchPosition = null;
             return swipeType;
         };
         this.checkAction = function () {
             let d = { //Получаем расстояния от начальной до конечной точек по обеим осям
-                x: this.touchStart.x - this.touchPosition.x,
-                y: this.touchStart.y - this.touchPosition.y
+                x: touchStart.x - touchPosition.x,
+                y: touchStart.y - touchPosition.y
             };
             let swipeType; //Сообщение
             if (Math.abs(d.x) > Math.abs(d.y)) { //Проверяем, движение по какой оси было длиннее
@@ -382,6 +380,9 @@ class htmlRender {
         }
     }
 }
+
+let touchStart = null; //Точка начала касания
+let touchPosition = null; //Текущая позиция
 
 const logic = new mainGame(logicOptions)
 const render = new htmlRender(htmlOptions)
