@@ -9,7 +9,7 @@ body {
     width: 85%;
     margin-left: auto;
     margin-right: auto;
-    padding-bottom: 50px;
+    padding-bottom: 100px;
     background-image: url("background.jpg");
 }
 #headerContainer {
@@ -197,6 +197,9 @@ td {
 
 /* Landscape phones and smaller */
 @media screen and (max-width: 480px) {
+    body {
+        padding-bottom: 10px;
+    }
     #headerContainer {
         width: 300px;
     }
