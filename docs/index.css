@@ -16,7 +16,6 @@ body {
 }
 #headerContainer {
     display: flex;
-    height: 100%;
     margin-right: auto;
     margin-left: auto;
     align-items: center;
