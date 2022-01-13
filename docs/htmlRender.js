@@ -326,34 +326,53 @@ class htmlRender {
         this.drawGrid(logic.getGrid());
         this.drawElements(logic.getGrid());
         this.newGame();
+        this.touchStart = null; //Точка начала касания
+        this.touchPosition = null; //Текущая позиция
         this.sensitivity = 20;
         this.observers();
         this.touchStartFunc = function (event) {
-            touchStart = {
+            this.touchStart = {
                 x: event.changedTouches[0].clientX,
                 y: event.changedTouches[0].clientY
             } //Получаем текущую позицию касания
-            touchPosition = {
-                x: touchStart.x,
-                y: touchStart.y
+            this.touchPosition = {
+                x: this.touchStart.x,
+                y: this.touchStart.y
             }
         };
         this.touchMove = function (event) {
-            touchPosition = {
+            this.touchPosition = {
                 x: event.changedTouches[0].clientX,
                 y: event.changedTouches[0].clientY,
             }
         };
         this.touchEnd = function () {
+            const animate = render.getAnimate().bind(render)
+            const move = logic.getMove().bind(logic)
             let swipeType = this.checkAction(); //Определяем, какой жест совершил пользователь
-            touchStart = null; //Очищаем позиции
-            touchPosition = null;
-            return swipeType;
+            if (swipeType === "Swipe left") {
+                let animationArray = move('left')
+                animate(animationArray)
+            }
+            if (swipeType === "Swipe right") {
+                let animationArray = move('right')
+                animate(animationArray)
+            }
+            if (swipeType === "Swipe up") {
+                let animationArray = move('top')
+                animate(animationArray)
+            }
+            if (swipeType === "Swipe down") {
+                let animationArray = move('bottom')
+                animate(animationArray)
+            }
+            this.touchStart = null; //Очищаем позиции
+            this.touchPosition = null;
         };
         this.checkAction = function () {
             let d = { //Получаем расстояния от начальной до конечной точек по обеим осям
-                x: touchStart.x - touchPosition.x,
-                y: touchStart.y - touchPosition.y
+                x: this.touchStart.x - this.touchPosition.x,
+                y: this.touchStart.y - this.touchPosition.y
             };
             let swipeType; //Сообщение
             if (Math.abs(d.x) > Math.abs(d.y)) { //Проверяем, движение по какой оси было длиннее
@@ -380,9 +399,6 @@ class htmlRender {
         }
     }
 }
-
-let touchStart = null; //Точка начала касания
-let touchPosition = null; //Текущая позиция
 
 const logic = new mainGame(logicOptions)
 const render = new htmlRender(htmlOptions)
@@ -467,24 +483,8 @@ function listeners (render, logic) {
         render.touchMove(e)
     }) //Движение пальцем по экрану
     htmlOptions.rootElement.firstElementChild.addEventListener("touchend", function (e) {
-        e.preventDefault()
-        if (render.touchEnd(e) === "Swipe left") {
-            let animationArray = move('left')
-            animate(animationArray)
-        }
-        if (render.touchEnd(e) === "Swipe right") {
-            let animationArray = move('right')
-            animate(animationArray)
-        }
-        if (render.touchEnd(e) === "Swipe up") {
-            let animationArray = move('top')
-            animate(animationArray)
-        }
-        if (render.touchEnd(e) === "Swipe down") {
-            let animationArray = move('bottom')
-            animate(animationArray)
-        }
-    })
+        render.touchEnd(e)
+    }) // Пользователь отпустил экран
 }
 
 
