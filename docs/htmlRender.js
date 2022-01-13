@@ -290,7 +290,7 @@ class htmlRender {
             const newGameButton = document.getElementById('newGameButton')
             const drawElements = this.drawElements
             const elementCreate = logic.getElementCreate()
-            newGameButton.onclick = function () {
+            const startNewGame = function () {
                 let currentElements = document.getElementsByClassName('basicElement')
                 while (currentElements[0]) {
                     currentElements[0].remove()
@@ -306,6 +306,12 @@ class htmlRender {
                 elementCreate(logic.getGrid())
                 elementCreate(logic.getGrid())
                 drawElements(logic.getGrid())
+            }
+            newGameButton.ontouchstart = function () {
+                startNewGame
+            }
+            newGameButton.onclick = function () {
+                startNewGame()
             }
         }
 
