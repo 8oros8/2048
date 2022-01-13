@@ -209,9 +209,11 @@ td {
     }
     #newGameButton {
         line-height: 15px;
+        font-size: 8px;
     }
     #scoreWrapper {
         line-height: 15px;
+        font-size: 8px;
     }
     #mainTable {
         border-spacing: 10px;
