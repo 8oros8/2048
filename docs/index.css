@@ -201,7 +201,6 @@ td {
 @media screen and (max-width: 480px) {
     #bodyContainer {
         padding-bottom: 10px;
-        margin-top: 150px;
     }
     #headerContainer {
         width: 300px;
