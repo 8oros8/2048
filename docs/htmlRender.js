@@ -261,8 +261,8 @@ class htmlRender {
         }
         this.observers = function () {
             const generalObserver = new MutationObserver(function ()  { // обновление счета при любых изменениях
-                if (logic.currentScore !== parseInt(htmlOptions.scoreWrapper.firstElementChild.innerText)) {
-                    htmlOptions.scoreWrapper.firstElementChild.innerText = logic.currentScore
+                if (logic.currentScore !== parseInt(htmlOptions.scoreWrapper.lastElementChild.innerText)) {
+                    htmlOptions.scoreWrapper.lastElementChild.innerText = logic.currentScore
                 }
             })
             const flickerObserver = new MutationObserver( function () {
@@ -280,7 +280,7 @@ class htmlRender {
                 childList: true,
                 characterDataOldValue: true
             })
-            flickerObserver.observe(htmlOptions.scoreWrapper.firstElementChild, {
+            flickerObserver.observe(htmlOptions.scoreWrapper.lastElementChild, {
                 childList: true,
                 characterDataOldValue: true,
                 characterData: true
