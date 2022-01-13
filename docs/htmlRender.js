@@ -308,7 +308,7 @@ class htmlRender {
                 drawElements(logic.getGrid())
             }
             newGameButton.ontouchstart = function () {
-                startNewGame
+                startNewGame()
             }
             newGameButton.ontouchend = function () {
                 newGameButton.style.background = 'whitesmoke'
@@ -319,6 +319,11 @@ class htmlRender {
                 startNewGame()
             }
         }
+        this.leftImpossible = 0
+        this.downImpossible = 0
+        this.upImpossible = 0
+        this.rightImpossible = 0
+        this.movementImpossible = this.leftImpossible + this.downImpossible + this.upImpossible + this.rightImpossible
 
         this.drawGrid(logic.getGrid());
         this.drawElements(logic.getGrid());
@@ -383,6 +388,7 @@ class htmlRender {
 const logic = new mainGame(logicOptions)
 const render = new htmlRender(htmlOptions)
 
+
 function listeners (render, logic) {
     const animate = render.getAnimate().bind(render)
     const move = logic.getMove().bind(logic)
@@ -397,28 +403,56 @@ function listeners (render, logic) {
             }
             if (event.code === 'ArrowLeft') {
                 let animationArray = move('left')
-                if ((animationArray.length === 0) && (tableFull === true)) {
+                if ((animationArray.length === 0) && (render.leftImpossible === 0)) {
+                    render.leftImpossible++
+                }
+                if ((animationArray.length > 0) && (render.leftImpossible === 1)) {
+                    render.leftImpossible--
+                }
+                render.movementImpossible = render.leftImpossible + render.downImpossible + render.upImpossible + render.rightImpossible
+                if ((render.movementImpossible === 4) && (tableFull === true)) {
                     alert('Игра окончена')
                 }
                 animate(animationArray)
             }
             if (event.code === 'ArrowDown') {
                 let animationArray = move('bottom')
-                if ((animationArray.length === 0) && (tableFull === true)) {
+                if ((animationArray.length === 0) && (render.downImpossible === 0)) {
+                    render.downImpossible++
+                }
+                if ((animationArray.length > 0) && (render.downImpossible === 1)) {
+                    render.downImpossible--
+                }
+                render.movementImpossible = render.leftImpossible + render.downImpossible + render.upImpossible + render.rightImpossible
+                if ((render.movementImpossible === 4) && (tableFull === true)) {
                     alert('Игра окончена')
                 }
                 animate(animationArray)
             }
             if (event.code === 'ArrowUp') {
                 let animationArray = move('top')
-                if ((animationArray.length === 0) && (tableFull === true)) {
+                if ((animationArray.length === 0) && (render.upImpossible === 0)) {
+                    render.upImpossible++
+                }
+                if ((animationArray.length > 0) && (render.upImpossible === 1)) {
+                    render.upImpossible--
+                }
+                render.movementImpossible = render.leftImpossible + render.downImpossible + render.upImpossible + render.rightImpossible
+                if ((render.movementImpossible === 4) && (tableFull === true)) {
                     alert('Игра окончена')
                 }
                 animate(animationArray)
             }
             if (event.code === 'ArrowRight') {
                 let animationArray = move('right')
-                if ((animationArray.length === 0) && (tableFull === true)) {
+                if ((animationArray.length === 0) && (render.rightImpossible === 0)) {
+                    render.rightImpossible++
+                }
+                if ((animationArray.length > 0) && (render.rightImpossible === 1)) {
+                    render.rightImpossible--
+                }
+                render.movementImpossible = render.leftImpossible + render.downImpossible + render.upImpossible + render.rightImpossible
+                if ((render.movementImpossible === 4) && (tableFull === true)) {
                     alert('Игра окончена')
                 }
                 animate(animationArray)
