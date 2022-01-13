@@ -307,7 +307,6 @@ class htmlRender {
                 elementCreate(logic.getGrid())
                 drawElements(logic.getGrid())
             }
-            newGameButton.addEventListener()
             newGameButton.ontouchend = function () {
                 newGameButton.style.background = 'whitesmoke'
                 newGameButton.style.boxShadow = '0 8px 15px rgb(0 0 0 / 10%)'
