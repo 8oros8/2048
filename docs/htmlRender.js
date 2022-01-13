@@ -310,6 +310,11 @@ class htmlRender {
             newGameButton.ontouchstart = function () {
                 startNewGame
             }
+            newGameButton.ontouchend = function () {
+                newGameButton.style.background = 'whitesmoke'
+                newGameButton.style.boxShadow = '0 8px 15px rgb(0 0 0 / 10%)'
+                newGameButton.style.color = 'black'
+            }
             newGameButton.onclick = function () {
                 startNewGame()
             }
