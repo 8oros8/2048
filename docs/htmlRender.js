@@ -378,28 +378,48 @@ function listeners (render, logic) {
     window.addEventListener('keydown', function(event) {
         event.preventDefault()
         if (logic.animationDone) { // проверяем завершилась ли предыдущая анимация
+            let tableFull = true
+            for (let element of document.querySelectorAll('td')) {
+                if (element.firstElementChild === null) {
+                    tableFull = false
+                }
+            }
             if (event.code === 'ArrowLeft') {
                 let animationArray = move('left')
+                if ((animationArray.length === 0) && (tableFull === true)) {
+                    alert('Игра окончена')
+                }
                 animate(animationArray)
             }
             if (event.code === 'ArrowDown') {
                 let animationArray = move('bottom')
+                if ((animationArray.length === 0) && (tableFull === true)) {
+                    alert('Игра окончена')
+                }
                 animate(animationArray)
             }
             if (event.code === 'ArrowUp') {
                 let animationArray = move('top')
+                if ((animationArray.length === 0) && (tableFull === true)) {
+                    alert('Игра окончена')
+                }
                 animate(animationArray)
             }
             if (event.code === 'ArrowRight') {
                 let animationArray = move('right')
+                if ((animationArray.length === 0) && (tableFull === true)) {
+                    alert('Игра окончена')
+                }
                 animate(animationArray)
             }
         }
     })
     htmlOptions.rootElement.firstElementChild.addEventListener("touchstart", function (e) {
+        e.preventDefault()
         render.touchStartFunc(e)
     }) //Начало касания
     htmlOptions.rootElement.firstElementChild.addEventListener("touchmove", function (e) {
+        e.preventDefault()
         render.touchMove(e)
     }) //Движение пальцем по экрану
     htmlOptions.rootElement.firstElementChild.addEventListener("touchend", function (e) {

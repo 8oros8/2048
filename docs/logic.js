@@ -5,8 +5,8 @@ export {logicOptions, mainGame}
 import {getRandomInt} from "./utilityFunctions.js";
 
 const logicOptions = {
-    gridWidth: 5,
-    gridHeight: 5,
+    gridWidth: 4,
+    gridHeight: 4,
 }
 
 class mainGame {
