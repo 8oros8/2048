@@ -212,6 +212,9 @@ td {
     #mainTable {
         border-spacing: 10px;
     }
+    .basicElement {
+        font-size: 20px;
+    }
     tr {
         height: 48px;
     }
