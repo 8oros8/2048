@@ -3,6 +3,7 @@
   "version": "3.2.0",
   "description": "",
   "private": true,
+  "repository": "https://github.com/8oros8/2048",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
@@ -15,6 +16,7 @@
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
     "mini-css-extract-plugin": "^2.5.0",
+    "style-loader": "^3.3.1",
     "webpack": "^5.66.0",
     "webpack-cli": "^4.9.1"
   }
