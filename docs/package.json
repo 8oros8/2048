@@ -6,7 +6,8 @@
   "repository": "https://github.com/8oros8/2048",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack --progress --mode=production",
+    "watch": "webpack --progress --watch"
   },
   "author": "Timur Karamyshev",
   "license": "ISC",
